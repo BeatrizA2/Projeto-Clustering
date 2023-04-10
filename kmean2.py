@@ -1,20 +1,22 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, DBSCAN
 from sklearn_extra.cluster import KMedoids
 from sklearn.metrics import silhouette_score
 import matplotlib.pyplot as plt
+import os
 
 def load_data():
     """
     Carrega o dataset wine.csv e retorna os dados normalizados.
     """
-    data = pd.read_csv('wine.csv')
-    X = data.iloc[:, 1:].values
+    
+    X = np.loadtxt('wine.data', delimiter=',')
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
     return X
+    
 
 def find_num_clusters(X):
     """
@@ -55,4 +57,6 @@ def main():
     plot_clusters(X, dbscan.labels_, "DBSCAN")
 
 if __name__ == "__main__":
+    os.chdir("C:\\Users\\CAP. PERNA\\OneDrive\\Documentos\\UFPE\\SI\\Projeto-Clustering")
+    print(os.getcwd())
     main()

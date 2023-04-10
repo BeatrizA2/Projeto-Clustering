@@ -1,6 +1,10 @@
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
+import os
+
+#alterando o diretorio
+os.chdir("C:\\Users\\CAP. PERNA\\OneDrive\\Documentos\\UFPE\\SI\\Projeto-Clustering")
 
 # carregando os dados
 data = pd.read_csv("wine.data", header=None)
