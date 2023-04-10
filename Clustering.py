@@ -1,11 +1,9 @@
-import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans, DBSCAN
-from sklearn_extra.cluster import KMedoids
-from sklearn.metrics import silhouette_score
-import matplotlib.pyplot as plt
-import os
+import FindNumClusters as fnc
+import PlotClusters as pc
+
+
 
 def load_data():
     """
@@ -16,51 +14,29 @@ def load_data():
     scaler = StandardScaler()
     X = scaler.fit_transform(X)
     return X
-    
 
-def find_num_clusters(X):
-    """
-    Encontra o número ideal de clusters usando o método Silhouette para KMeans e KMedoids.
-    """
-    scores = []
-    for k in range(2, 11):
-        kmeans = KMeans(n_clusters=k, random_state=42)
-        kmedoids = KMedoids(n_clusters=k, random_state=42)
-        kmeans_score = silhouette_score(X, kmeans.fit_predict(X))
-        kmedoids_score = silhouette_score(X, kmedoids.fit_predict(X))
-        score = max(kmeans_score, kmedoids_score)
-        scores.append(score)
-    optimal_k = scores.index(max(scores)) + 2
-    plt.plot(range(2, 11), scores)
-    plt.title('Silhouette Score para k entre 2 e 10')
-    plt.xlabel('Número de clusters')
-    plt.ylabel('Silhouette Score')
-    plt.show()
-    return optimal_k
-
-def plot_clusters(X, labels, title):
-    """
-    Plota os clusters no espaço de duas dimensões.
-    """
-    plt.scatter(X[:, 0], X[:, 1], c=labels)
-    plt.title(title)
-    plt.show()
 
 def main():
     X = load_data()
+    findNumClusters = fnc.FindNumClusters(X)
+    findNumClusters.plotElbow()
+    findNumClusters.plotSilhouette()
 
-    # Encontrar o número ideal de clusters usando o método Silhouette
-    k = find_num_clusters(X)
+    print(f'Optimal number of clusters by Elbow Method: {findNumClusters.optimal_k_elbow}')
+    print(f'Optimal number of clusters by Silhouette Method: {findNumClusters.optimal_k_silhouette}')
 
-    # Executar os algoritmos de clusterização
-    kmeans = KMeans(n_clusters=k, random_state=42)
-    kmedoids = KMedoids(n_clusters=k, random_state=42)
-    dbscan = DBSCAN(eps=0.5, min_samples=5).fit(X)
+    plotClustersElbow = pc.PlotClusters(X, findNumClusters.optimal_k_elbow, "Elbow Method")
+    plotClustersElbow.plotByKMeans()
+    plotClustersElbow.plotByKMedoids()
+    plotClustersElbow.plotByDBSCAN()
 
-    # Plotar os resultados
-    plot_clusters(X, kmeans.fit_predict(X), "KMeans")
-    plot_clusters(X, kmedoids.fit_predict(X), "KMedoids")
-    plot_clusters(X, dbscan.labels_, "DBSCAN")
+    plotClustersSilhouette = pc.PlotClusters(X, findNumClusters.optimal_k_silhouette, "Silhouette Method")
+    plotClustersSilhouette.plotByKMeans()
+    plotClustersSilhouette.plotByKMedoids()
+    plotClustersSilhouette.plotByDBSCAN()
+
+
+    
 
 if __name__ == "__main__":
     main()
