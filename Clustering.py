@@ -30,7 +30,13 @@ def find_num_clusters(X):
         kmedoids_score = silhouette_score(X, kmedoids.fit_predict(X))
         score = max(kmeans_score, kmedoids_score)
         scores.append(score)
-    return scores.index(max(scores)) + 2
+    optimal_k = scores.index(max(scores)) + 2
+    plt.plot(range(2, 11), scores)
+    plt.title('Silhouette Score para k entre 2 e 10')
+    plt.xlabel('Número de clusters')
+    plt.ylabel('Silhouette Score')
+    plt.show()
+    return optimal_k
 
 def plot_clusters(X, labels, title):
     """
@@ -58,5 +64,4 @@ def main():
 
 if __name__ == "__main__":
     os.chdir("C:\\Users\\CAP. PERNA\\OneDrive\\Documentos\\UFPE\\SI\\Projeto-Clustering")
-    print(os.getcwd())
     main()
