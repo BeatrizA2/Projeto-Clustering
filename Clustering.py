@@ -63,5 +63,4 @@ def main():
     plot_clusters(X, dbscan.labels_, "DBSCAN")
 
 if __name__ == "__main__":
-    os.chdir("C:\\Users\\CAP. PERNA\\OneDrive\\Documentos\\UFPE\\SI\\Projeto-Clustering")
     main()
