@@ -1,5 +1,4 @@
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans, DBSCAN
+from sklearn.cluster import KMeans
 from sklearn_extra.cluster import KMedoids
 from sklearn.metrics import silhouette_score
 
@@ -13,23 +12,27 @@ class FindNumClusters:
         # Calcula o inertia para cada valor de k
         inertias = []
         for k in range(2, 11):
-            kmeans = KMeans(n_clusters=k, random_state=42).fit(self.data)
-            kmedoids = KMedoids(n_clusters=k, random_state=42).fit(self.data)
+            kmeans = KMeans(n_clusters=k).fit(self.data)
+            kmedoids = KMedoids(n_clusters=k).fit(self.data)
             kmeans_inertia = kmeans.inertia_
             kmedoids_inertia = kmedoids.inertia_
+            # Adiciona o menor inertia entre os dois métodos
             inertias.append(min(kmeans_inertia, kmedoids_inertia))
         # Retorna o valor de k que minimiza o inertia
         return inertias, inertias.index(min(inertias)) + 2
 
     def bySilhouette(self):
         scores = []
+        # Calcula o silhouette score para cada valor de k
         for k in range(2, 11):
-            kmeans = KMeans(n_clusters=k, random_state=42)
-            kmedoids = KMedoids(n_clusters=k, random_state=42)
+            kmeans = KMeans(n_clusters=k)
+            kmedoids = KMedoids(n_clusters=k)
             kmeans_score = silhouette_score(self.data, kmeans.fit_predict(self.data))
             kmedoids_score = silhouette_score(self.data, kmedoids.fit_predict(self.data))
+            # Adiciona o maior silhouette score entre os dois métodos
             score = max(kmeans_score, kmedoids_score)
             scores.append(score)
+        # Retorna o valor de k que maximiza o silhouette score
         return scores, scores.index(max(scores)) + 2
     
     def plotElbow(self):
