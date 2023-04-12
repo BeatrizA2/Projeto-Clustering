@@ -15,3 +15,5 @@ https://www.kaggle.com/code/praanj/k-means-k-mediods-clustering-on-uci-seed-data
 https://www.kaggle.com/code/caesarmario/clustering-for-effective-marketing-strategy
 
 https://chat.openai.com/
+
+https://www.kaggle.com/code/xvivancos/tutorial-clustering-wines-with-k-means
