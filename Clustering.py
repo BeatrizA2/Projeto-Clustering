@@ -1,7 +1,8 @@
-import numpy as np
+import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import FindNumClusters as fnc
 import PlotClusters as pc
+import PCA as pca
 
 
 
@@ -10,10 +11,9 @@ def load_data():
     Carrega o dataset wine.csv e retorna os dados normalizados.
     """
     
-    X = np.loadtxt('wine.data', delimiter=',')
-    scaler = StandardScaler()
-    X = scaler.fit_transform(X)
-    return X
+    df = pd.read_csv('wine.data', header=None)
+    return pca.createPCA(df, 2).X_reduced
+
 
 
 def main():
